@@ -2,222 +2,217 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Banking Patterns</title>
+  <title>Banking Website – Design Patterns Demo</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f5f7fa; }
-    header { background: #1976d2; color: white; padding: 15px; text-align: center; font-size: 24px; font-weight: bold; }
-    nav { display: flex; justify-content: center; background: #333; }
-    nav button { flex: 1; padding: 15px; background: #333; color: white; border: none; cursor: pointer; font-size: 16px; }
-    nav button.active { background: #1976d2; }
-    .container { max-width: 900px; margin: 20px auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);}
-    .hidden { display: none; }
-
-    /* Common Elements */
-    .btn { padding: 12px 20px; margin: 6px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
-    #logs, #result, #output { margin-top: 15px; padding: 12px; background: #f1f1f1; border-radius: 8px; min-height: 50px; }
-
-    /* Buttons */
-    .btn-deposit { background: #4caf50; color: white; }
-    .btn-withdraw { background: #f44336; color: white; }
-    .btn-balance { background: #ff9800; color: white; }
-    .place-btn { background: #1976d2; color: white; border: none; width: 100%; padding: 10px; margin-top: 10px; border-radius: 6px; }
-    select { width: 100%; padding: 10px; margin-top: 10px; border: 1px solid #ccc; border-radius: 6px; }
-
-    /* Homepage cards */
-    .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 20px; }
-    .card { background: #e3f2fd; padding: 20px; border-radius: 12px; text-align: center; box-shadow: 0 3px 6px rgba(0,0,0,0.1); cursor: pointer; transition: transform 0.2s; }
-    .card:hover { transform: scale(1.05); background: #bbdefb; }
-    .emoji { font-size: 40px; display: block; margin-bottom: 10px; }
+    body { font-family: Arial, sans-serif; margin:0; padding:0; background:#f5f7fa; }
+    header { background:#2c3e50; color:white; padding:20px; text-align:center; }
+    nav { background:#34495e; padding:10px; display:flex; justify-content:center; }
+    nav button {
+      background:#1abc9c; border:none; color:white; padding:10px 20px;
+      margin:0 10px; cursor:pointer; border-radius:5px; font-size:16px;
+    }
+    nav button:hover { background:#16a085; }
+    .container { padding:20px; display:none; }
+    .active { display:block; }
+    h2 { color:#2c3e50; }
+    .observer-box, .command-box {
+      background:white; padding:15px; border-radius:10px; margin:10px 0;
+      box-shadow:0 2px 5px rgba(0,0,0,0.1);
+    }
+    input, select {
+      padding:10px; width:100%; margin:8px 0; border:1px solid #ccc; border-radius:5px;
+    }
+    .place-btn {
+      background:#2980b9; color:white; border:none; padding:10px 20px;
+      border-radius:5px; cursor:pointer; margin-top:10px;
+    }
+    .place-btn:hover { background:#1f6391; }
   </style>
 </head>
 <body>
-  <header>🏦 Banking Website (Design Patterns)</header>
+  <header>
+    <h1>🏦 Banking Website – Design Patterns</h1>
+    <p>Observer | Strategy | Command Patterns Demo</p>
+  </header>
+
   <nav>
-    <button id="tab0" class="active" onclick="showTab(0)">Home</button>
-    <button id="tab1" onclick="showTab(1)">Observer Pattern</button>
-    <button id="tab2" onclick="showTab(2)">Strategy Pattern</button>
-    <button id="tab3" onclick="showTab(3)">Command Pattern</button>
+    <button onclick="showContent('home')">Home</button>
+    <button onclick="showContent('observer')">Observer</button>
+    <button onclick="showContent('strategy')">Strategy</button>
+    <button onclick="showContent('command')">Command</button>
   </nav>
 
-  <!-- HOMEPAGE -->
-  <div id="content0" class="container">
-    <h2>Welcome to ABC Bank</h2>
-    <p>Select a service to explore how design patterns apply in banking.</p>
-    <div class="grid">
-      <div class="card" onclick="showTab(1)">
-        <span class="emoji">🔔</span>
-        <h3>Observer Pattern</h3>
-        <p>Notifications when balance changes</p>
-      </div>
-      <div class="card" onclick="showTab(2)">
-        <span class="emoji">📊</span>
-        <h3>Strategy Pattern</h3>
-        <p>Loan calculations (Home, Car, Personal)</p>
-      </div>
-      <div class="card" onclick="showTab(3)">
-        <span class="emoji">⚙️</span>
-        <h3>Command Pattern</h3>
-        <p>Execute banking actions (Deposit, Withdraw)</p>
-      </div>
+  <!-- Home -->
+  <div id="home" class="container active">
+    <h2>Welcome to Banking Design Pattern Demo</h2>
+    <p>This demo illustrates three important design patterns in a <b>Banking Context</b>:</p>
+    <ul>
+      <li><b>Observer Pattern</b> – Notify users of balance updates in real-time.</li>
+      <li><b>Strategy Pattern</b> – Calculate EMI for different loan types (Home, Car, Personal) based on amount & duration.</li>
+      <li><b>Command Pattern</b> – Perform transactions (Deposit, Withdraw, Transfer).</li>
+    </ul>
+    <p>Use the navigation bar to explore each section.</p>
+  </div>
+
+  <!-- Observer Pattern -->
+  <div id="observer" class="container">
+    <h2>Observer Pattern – Balance Notifications</h2>
+    <div class="observer-box">
+      <label><b>Enter Amount to Deposit:</b></label>
+      <input type="number" id="depositInput" placeholder="Enter amount">
+      <button class="place-btn" onclick="depositMoney()">Deposit</button>
+      <p id="balance">💰 Current Balance: ₹0</p>
+      <p id="user1"></p>
+      <p id="user2"></p>
     </div>
   </div>
 
-  <!-- OBSERVER PATTERN -->
-  <div id="content1" class="container hidden">
-    <h2>Observer Pattern – Account Notifications</h2>
-    <p>When account balance changes, both customer and bank system get notified.</p>
-    <button class="btn btn-deposit" onclick="updateBalance('Deposited ₹500')">Deposit ₹500</button>
-    <button class="btn btn-withdraw" onclick="updateBalance('Withdrew ₹200')">Withdraw ₹200</button>
-    <button class="btn btn-balance" onclick="updateBalance('Checked Balance')">Check Balance</button>
-    <div id="logs"></div>
+  <!-- Strategy Pattern -->
+  <div id="strategy" class="container">
+    <h2>Strategy Pattern – Loan EMI Calculation</h2>
+    <label><b>Select Loan Type:</b></label>
+    <select id="loanOption">
+      <option value="home">Home Loan (8% Interest)</option>
+      <option value="car">Car Loan (10% Interest)</option>
+      <option value="personal">Personal Loan (12% Interest)</option>
+    </select>
+
+    <label><b>Loan Amount (₹):</b></label>
+    <input type="number" id="loanAmount" placeholder="Enter amount">
+
+    <label><b>Duration (Years):</b></label>
+    <input type="number" id="loanYears" placeholder="Enter years">
+
+    <button class="place-btn" onclick="calculateLoan()">Calculate EMI</button>
+    <div id="result"></div>
   </div>
 
-  <!-- STRATEGY PATTERN -->
-  <!-- STRATEGY PATTERN -->
-<div id="content2" class="container hidden">
-  <h2>Strategy Pattern – Loan Calculation</h2>
-  <label><b>Select Loan Type:</b></label>
-  <select id="loanOption">
-    <option value="home">Home Loan (8% Interest)</option>
-    <option value="car">Car Loan (10% Interest)</option>
-    <option value="personal">Personal Loan (12% Interest)</option>
-  </select>
-
-  <label><b>Loan Amount (₹):</b></label>
-  <input type="number" id="loanAmount" placeholder="Enter amount" style="width:100%; padding:10px; margin-top:5px;">
-
-  <label><b>Duration (Years):</b></label>
-  <input type="number" id="loanYears" placeholder="Enter years" style="width:100%; padding:10px; margin-top:5px;">
-
-  <button class="place-btn" onclick="calculateLoan()">Calculate EMI</button>
-  <div id="result"></div>
-</div>
-
-<script>
-  // Loan Strategy Classes
-  class HomeLoan {
-    calculate(amount, years) {
-      return computeEMI(amount, years, 8);
-    }
-  }
-  class CarLoan {
-    calculate(amount, years) {
-      return computeEMI(amount, years, 10);
-    }
-  }
-  class PersonalLoan {
-    calculate(amount, years) {
-      return computeEMI(amount, years, 12);
-    }
-  }
-
-  // Context
-  class LoanContext {
-    setStrategy(strategy) { this.strategy = strategy; }
-    executeStrategy(amount, years) { return this.strategy.calculate(amount, years); }
-  }
-
-  // EMI Formula
-  function computeEMI(P, years, annualRate) {
-    const n = years * 12; // total months
-    const r = annualRate / 12 / 100; // monthly interest
-    const emi = (P * r * Math.pow(1+r, n)) / (Math.pow(1+r, n) - 1);
-    return `💰 Loan Amount: ₹${P.toLocaleString()} <br>📅 Duration: ${years} years <br>📊 EMI (${annualRate}%): <b>₹${emi.toFixed(2)}/month</b>`;
-  }
-
-  // Main Function
-  function calculateLoan() {
-    const option = document.getElementById("loanOption").value;
-    const amount = parseFloat(document.getElementById("loanAmount").value);
-    const years = parseInt(document.getElementById("loanYears").value);
-
-    if (!amount || !years) {
-      document.getElementById("result").innerHTML = "<p style='color:red;'>⚠️ Please enter both loan amount and duration.</p>";
-      return;
-    }
-
-    const context = new LoanContext();
-    if (option === "home") context.setStrategy(new HomeLoan());
-    if (option === "car") context.setStrategy(new CarLoan());
-    if (option === "personal") context.setStrategy(new PersonalLoan());
-
-    document.getElementById("result").innerHTML = "<p>" + context.executeStrategy(amount, years) + "</p>";
-  }
-</script>
-
-  <!-- COMMAND PATTERN -->
-  <div id="content3" class="container hidden">
-    <h2>Command Pattern – Banking Actions</h2>
-    <button class="btn btn-deposit" onclick="depositCmd()">Deposit</button>
-    <button class="btn btn-withdraw" onclick="withdrawCmd()">Withdraw</button>
-    <button class="btn btn-balance" onclick="checkBalanceCmd()">Check Balance</button>
-    <div id="output"></div>
+  <!-- Command Pattern -->
+  <div id="command" class="container">
+    <h2>Command Pattern – Transactions</h2>
+    <div class="command-box">
+      <label><b>Enter Amount:</b></label>
+      <input type="number" id="cmdAmount" placeholder="Enter amount">
+      <select id="cmdType">
+        <option value="deposit">Deposit</option>
+        <option value="withdraw">Withdraw</option>
+        <option value="transfer">Transfer</option>
+      </select>
+      <button class="place-btn" onclick="executeTransaction()">Execute</button>
+      <p id="cmdBalance">💰 Current Balance: ₹0</p>
+      <p id="cmdLog"></p>
+    </div>
   </div>
 
   <script>
-    // Tab Switching
-    function showTab(n) {
-      document.querySelectorAll("nav button").forEach(btn => btn.classList.remove("active"));
-      document.querySelectorAll(".container").forEach(div => div.classList.add("hidden"));
-      document.getElementById("tab"+n).classList.add("active");
-      document.getElementById("content"+n).classList.remove("hidden");
+    // Navigation
+    function showContent(id) {
+      document.querySelectorAll('.container').forEach(c => c.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
     }
 
-    // ========== OBSERVER PATTERN ==========
-    class BankAccount {
-      constructor() { this.observers = []; this.action = ""; }
+    /* ---------------- Observer Pattern ---------------- */
+    class Subject {
+      constructor() { this.observers = []; this.balance = 0; }
       addObserver(observer) { this.observers.push(observer); }
-      notifyObservers() { this.observers.forEach(o => o.update(this.action)); }
-      setAction(action) { this.action = action; this.notifyObservers(); }
+      notify() { this.observers.forEach(o => o.update(this.balance)); }
+      deposit(amount) { this.balance += amount; this.notify(); }
     }
-    class Customer {
-      update(action) { document.getElementById("logs").innerHTML += `<p>👤 Customer: ${action}</p>`; }
+    class Observer {
+      constructor(elementId) { this.elementId = elementId; }
+      update(balance) {
+        document.getElementById(this.elementId).innerText = "🔔 User notified: Balance is ₹" + balance;
+      }
     }
-    class BankSystem {
-      update(action) { document.getElementById("logs").innerHTML += `<p>🏦 Bank System: ${action}</p>`; }
-    }
-    const account = new BankAccount();
-    account.addObserver(new Customer());
-    account.addObserver(new BankSystem());
-    function updateBalance(action) { account.setAction(action); }
+    const bankAccount = new Subject();
+    bankAccount.addObserver(new Observer("user1"));
+    bankAccount.addObserver(new Observer("user2"));
 
-    // ========== STRATEGY PATTERN ==========
-    class HomeLoan { calculate() { return "🏠 Home Loan EMI at 8% interest: ₹25,000/month"; } }
-    class CarLoan { calculate() { return "🚗 Car Loan EMI at 10% interest: ₹12,000/month"; } }
-    class PersonalLoan { calculate() { return "💳 Personal Loan EMI at 12% interest: ₹8,000/month"; } }
+    function depositMoney() {
+      const amt = parseFloat(document.getElementById("depositInput").value);
+      if (!amt) return;
+      bankAccount.deposit(amt);
+      document.getElementById("balance").innerText = "💰 Current Balance: ₹" + bankAccount.balance;
+    }
+
+    /* ---------------- Strategy Pattern ---------------- */
+    class HomeLoan {
+      calculate(amount, years) { return computeEMI(amount, years, 8); }
+    }
+    class CarLoan {
+      calculate(amount, years) { return computeEMI(amount, years, 10); }
+    }
+    class PersonalLoan {
+      calculate(amount, years) { return computeEMI(amount, years, 12); }
+    }
     class LoanContext {
       setStrategy(strategy) { this.strategy = strategy; }
-      executeStrategy() { return this.strategy.calculate(); }
+      executeStrategy(amount, years) { return this.strategy.calculate(amount, years); }
+    }
+    function computeEMI(P, years, annualRate) {
+      const n = years * 12;
+      const r = annualRate / 12 / 100;
+      const emi = (P * r * Math.pow(1+r, n)) / (Math.pow(1+r, n) - 1);
+      return `💰 Loan Amount: ₹${P.toLocaleString()} <br>📅 Duration: ${years} years <br>📊 EMI (${annualRate}%): <b>₹${emi.toFixed(2)}/month</b>`;
     }
     function calculateLoan() {
       const option = document.getElementById("loanOption").value;
+      const amount = parseFloat(document.getElementById("loanAmount").value);
+      const years = parseInt(document.getElementById("loanYears").value);
+      if (!amount || !years) {
+        document.getElementById("result").innerHTML = "<p style='color:red;'>⚠️ Please enter both loan amount and duration.</p>";
+        return;
+      }
       const context = new LoanContext();
       if (option === "home") context.setStrategy(new HomeLoan());
       if (option === "car") context.setStrategy(new CarLoan());
       if (option === "personal") context.setStrategy(new PersonalLoan());
-      document.getElementById("result").innerHTML = "<p><b>" + context.executeStrategy() + "</b></p>";
+      document.getElementById("result").innerHTML = "<p>" + context.executeStrategy(amount, years) + "</p>";
     }
 
-    // ========== COMMAND PATTERN ==========
-    class BankingSystem {
-      deposit() { return "✅ ₹500 deposited successfully."; }
-      withdraw() { return "❌ ₹200 withdrawn."; }
-      checkBalance() { return "📊 Current Balance: ₹10,000"; }
+    /* ---------------- Command Pattern ---------------- */
+    class BankAccount {
+      constructor() { this.balance = 0; }
+      deposit(amount) { this.balance += amount; return "Deposited ₹" + amount; }
+      withdraw(amount) {
+        if (amount > this.balance) return "❌ Insufficient balance";
+        this.balance -= amount; return "Withdrew ₹" + amount;
+      }
+      transfer(amount) {
+        if (amount > this.balance) return "❌ Insufficient balance";
+        this.balance -= amount; return "Transferred ₹" + amount;
+      }
     }
-    class Command { execute() {} }
-    class DepositCommand extends Command { constructor(system){super();this.system=system;} execute(){return this.system.deposit();} }
-    class WithdrawCommand extends Command { constructor(system){super();this.system=system;} execute(){return this.system.withdraw();} }
-    class CheckBalanceCommand extends Command { constructor(system){super();this.system=system;} execute(){return this.system.checkBalance();} }
-    class AccountInvoker {
-      setCommand(command){ this.command = command; }
-      executeCommand(){ return this.command.execute(); }
+    class Command {
+      constructor(account, amount) { this.account = account; this.amount = amount; }
+      execute() {}
     }
-    const bankSystem = new BankingSystem();
-    const invoker = new AccountInvoker();
-    function depositCmd(){ invoker.setCommand(new DepositCommand(bankSystem)); print(invoker.executeCommand()); }
-    function withdrawCmd(){ invoker.setCommand(new WithdrawCommand(bankSystem)); print(invoker.executeCommand()); }
-    function checkBalanceCmd(){ invoker.setCommand(new CheckBalanceCommand(bankSystem)); print(invoker.executeCommand()); }
-    function print(msg){ document.getElementById("output").innerHTML += "<p>" + msg + "</p>"; }
+    class DepositCommand extends Command {
+      execute() { return this.account.deposit(this.amount); }
+    }
+    class WithdrawCommand extends Command {
+      execute() { return this.account.withdraw(this.amount); }
+    }
+    class TransferCommand extends Command {
+      execute() { return this.account.transfer(this.amount); }
+    }
+    class Invoker {
+      run(command) { return command.execute(); }
+    }
+    const myAccount = new BankAccount();
+    const invoker = new Invoker();
+    function executeTransaction() {
+      const amt = parseFloat(document.getElementById("cmdAmount").value);
+      const type = document.getElementById("cmdType").value;
+      if (!amt) return;
+      let command;
+      if (type === "deposit") command = new DepositCommand(myAccount, amt);
+      if (type === "withdraw") command = new WithdrawCommand(myAccount, amt);
+      if (type === "transfer") command = new TransferCommand(myAccount, amt);
+      const result = invoker.run(command);
+      document.getElementById("cmdBalance").innerText = "💰 Current Balance: ₹" + myAccount.balance;
+      document.getElementById("cmdLog").innerText = "📢 " + result;
+    }
   </script>
 </body>
 </html>
