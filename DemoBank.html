@@ -73,17 +73,77 @@
   </div>
 
   <!-- STRATEGY PATTERN -->
-  <div id="content2" class="container hidden">
-    <h2>Strategy Pattern – Loan Calculation</h2>
-    <label><b>Select Loan Type:</b></label>
-    <select id="loanOption">
-      <option value="home">Home Loan (8% Interest)</option>
-      <option value="car">Car Loan (10% Interest)</option>
-      <option value="personal">Personal Loan (12% Interest)</option>
-    </select>
-    <button class="place-btn" onclick="calculateLoan()">Calculate EMI</button>
-    <div id="result"></div>
-  </div>
+  <!-- STRATEGY PATTERN -->
+<div id="content2" class="container hidden">
+  <h2>Strategy Pattern – Loan Calculation</h2>
+  <label><b>Select Loan Type:</b></label>
+  <select id="loanOption">
+    <option value="home">Home Loan (8% Interest)</option>
+    <option value="car">Car Loan (10% Interest)</option>
+    <option value="personal">Personal Loan (12% Interest)</option>
+  </select>
+
+  <label><b>Loan Amount (₹):</b></label>
+  <input type="number" id="loanAmount" placeholder="Enter amount" style="width:100%; padding:10px; margin-top:5px;">
+
+  <label><b>Duration (Years):</b></label>
+  <input type="number" id="loanYears" placeholder="Enter years" style="width:100%; padding:10px; margin-top:5px;">
+
+  <button class="place-btn" onclick="calculateLoan()">Calculate EMI</button>
+  <div id="result"></div>
+</div>
+
+<script>
+  // Loan Strategy Classes
+  class HomeLoan {
+    calculate(amount, years) {
+      return computeEMI(amount, years, 8);
+    }
+  }
+  class CarLoan {
+    calculate(amount, years) {
+      return computeEMI(amount, years, 10);
+    }
+  }
+  class PersonalLoan {
+    calculate(amount, years) {
+      return computeEMI(amount, years, 12);
+    }
+  }
+
+  // Context
+  class LoanContext {
+    setStrategy(strategy) { this.strategy = strategy; }
+    executeStrategy(amount, years) { return this.strategy.calculate(amount, years); }
+  }
+
+  // EMI Formula
+  function computeEMI(P, years, annualRate) {
+    const n = years * 12; // total months
+    const r = annualRate / 12 / 100; // monthly interest
+    const emi = (P * r * Math.pow(1+r, n)) / (Math.pow(1+r, n) - 1);
+    return `💰 Loan Amount: ₹${P.toLocaleString()} <br>📅 Duration: ${years} years <br>📊 EMI (${annualRate}%): <b>₹${emi.toFixed(2)}/month</b>`;
+  }
+
+  // Main Function
+  function calculateLoan() {
+    const option = document.getElementById("loanOption").value;
+    const amount = parseFloat(document.getElementById("loanAmount").value);
+    const years = parseInt(document.getElementById("loanYears").value);
+
+    if (!amount || !years) {
+      document.getElementById("result").innerHTML = "<p style='color:red;'>⚠️ Please enter both loan amount and duration.</p>";
+      return;
+    }
+
+    const context = new LoanContext();
+    if (option === "home") context.setStrategy(new HomeLoan());
+    if (option === "car") context.setStrategy(new CarLoan());
+    if (option === "personal") context.setStrategy(new PersonalLoan());
+
+    document.getElementById("result").innerHTML = "<p>" + context.executeStrategy(amount, years) + "</p>";
+  }
+</script>
 
   <!-- COMMAND PATTERN -->
   <div id="content3" class="container hidden">
